@@ -6,7 +6,7 @@ on:
 
 jobs:
   run-bot:
-    runs-on: ubuntu-latest
+    runs-on: macos-13  # मैक ओएस पर इम्यूलेटर बिना किसी एरर के तेजी से बूट होता है
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
@@ -16,13 +16,18 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install Android Tools & Emulator
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y adb qemu-kvm
-        adb start-server
-
-    - name: Run Guild Booster Bot
-      run: |
-        python final_bot.py
-        
+    - name: Run Android Emulator and Bot
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29  # एंड्रॉइड 10 इम्यूलेटर जो फ्री फायर के लिए परफेक्ट है
+        target: default
+        arch: x86_64
+        profile: Nexus 6
+        script: |
+          # इम्यूलेटर पूरी तरह चालू होने के बाद यह कमांड्स रन होंगी
+          echo "[+] क्लाउड एंड्रॉइड इम्यूलेटर सफलतापूर्वक बूट हो गया है!"
+          adb devices
+          
+          # यहाँ पर आपका बोट शुरू होगा
+          python final_bot.py
+          
