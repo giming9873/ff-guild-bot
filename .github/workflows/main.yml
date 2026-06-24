@@ -6,29 +6,25 @@ on:
 
 jobs:
   run-bot:
-    runs-on: macos-13  # मैक ओएस पर इम्यूलेटर बिना किसी एरर के तेजी से बूट होता है
+    runs-on: macos-15-intel  # समाधान: यह चालू इंटेल रनर है जो x86_64 इम्यूलेटर को सपोर्ट करता है
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.x'
+        python-version: '3.10'
 
     - name: Run Android Emulator and Bot
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 29  # एंड्रॉइड 10 इम्यूलेटर जो फ्री फायर के लिए परफेक्ट है
+        api-level: 29  # एंड्रॉइड 10 इम्यूलेटर
         target: default
         arch: x86_64
         profile: Nexus 6
         script: |
-          # इम्यूलेटर पूरी तरह चालू होने के बाद यह कमांड्स रन होंगी
           echo "[+] क्लाउड एंड्रॉइड इम्यूलेटर सफलतापूर्वक बूट हो गया है!"
           adb devices
-          
-          # यहाँ पर आपका बोट शुरू होगा
           python final_bot.py
-
           
